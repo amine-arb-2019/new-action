@@ -1,0 +1,25 @@
+on:
+    pull_request_target:
+     branches: [ main ]
+     types: [opened]
+    pull_request:
+     branches: [ main ]
+     types: [opened]   
+    issue_comment:
+      types: [created]   
+  
+  jobs:
+    check_pr_comments:
+      runs-on: ubuntu-latest
+      name: Check PR comments contain strings
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v2
+        - name: Check PR comments 
+          uses: ./
+          id: check-pr-comments
+          with:
+            github-token: "${{ secrets.GITHUB_TOKEN }}"
+            string-list: '@graalvmbot', 'oracle-ca_us@oracle.com'
+            pull-request-number: '${{ github.event.pull_request.number }}'
+  
